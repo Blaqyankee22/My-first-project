@@ -70,7 +70,20 @@ Then run the three deploy commands again. The same file rebuilds the same enviro
 | Whole resource group deleted | ![Teardown](images/04-teardown.png) |
 | Everything redeployed from the same file | ![Rebuild](images/05-rebuild-resources.png) |
 | Rebuilt VM, SSH works again | ![Rebuild SSH](images/06-rebuild-ssh-login.png) |
+## Automated deployment with GitHub Actions
 
+A workflow (`.github/workflows/deploy.yml`) deploys `main.bicep` to Azure whenever the template changes on `main`, or when run manually. It logs in with OIDC, so no passwords are stored, using a service principal that has Contributor on `rg-iac` only.
+
+
+<img width="1361" height="557" alt="image" src="https://github.com/user-attachments/assets/01f94759-fd61-40af-8978-a778ff206aaa" />
+
+![Successful GitHub Actions run](images/07-actions-green.png)
+
+
+
+
+
+![Resources deployed by the pipeline](images/08-actions-resources.png)
 ## Troubleshooting notes
 
 - **`BCP028: Identifier "nic" is declared multiple times`:** a resource block was pasted into the file twice. Bicep needs every symbolic name to be unique, so I removed the duplicate block.
@@ -83,3 +96,9 @@ Then run the three deploy commands again. The same file rebuilds the same enviro
 - Never commit the private key (`iac_key`). Add it to `.gitignore`.
 - Next: add Azure Monitor alerts, Key Vault, and backups to the same template.
 - Delete the resource group when you're done so the VM doesn't keep running.
+  
+## What I learned
+- Writing infrastructure as code with Bicep instead of clicking through the portal
+- Deleting a whole environment and rebuilding it from one file
+- Automating deployments with GitHub Actions and OIDC login, so no passwords are stored
+- Debugging a real pipeline failure: invalid YAML, then a federated credential subject mismatch
