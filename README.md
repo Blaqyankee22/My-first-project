@@ -84,11 +84,15 @@ A workflow (`.github/workflows/deploy.yml`) deploys `main.bicep` to Azure whenev
 
 
 ![Resources deployed by the pipeline](images/08-actions-resources.png)
+
 ## Troubleshooting notes
 
 - **`BCP028: Identifier "nic" is declared multiple times`:** a resource block was pasted into the file twice. Bicep needs every symbolic name to be unique, so I removed the duplicate block.
 - **Large pastes scrambled in Cloud Shell:** I built the file in four smaller pieces with `cat >> main.bicep`, then checked it with `grep '^resource' main.bicep`.
-- **`Sssh-keygen` not recognized:** a typo. The error message suggested the right command.
+- **`Sssh-keygen` not recognized:** a typo. The error message suggested the right command.-
+- **Invalid workflow file (YAML error):** the multi-line `run:` block was misaligned, so I put the command on one line.
+- **`AADSTS700213` at Azure login:** GitHub's token subject now includes the owner and repo IDs, so I added a federated credential with that exact subject.
+- 
 
 ## Notes and next steps
 
