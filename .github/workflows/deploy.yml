@@ -27,7 +27,4 @@ jobs:
       - name: Deploy main.bicep
         env:
           SSH_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
-        run: |az deployment group create \
-            --resource-group rg-iac \
-            --template-file main.bicep \
-            --parameters sshKey="$SSH_KEY"
+        run: az deployment group create --resource-group rg-iac --template-file main.bicep --parameters sshKey="$SSH_KEY"
